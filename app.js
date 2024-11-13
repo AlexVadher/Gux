@@ -1,22 +1,16 @@
-// app.js
+// src/app.js
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
-
-const usuarioRoutes = require('./routes/usersRoutes');
-
-
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+const parqueaderoRoutes = require('./routes/parkingRoutes');
 
+// Middleware para parsear el cuerpo de las solicitudes JSON
+app.use(express.json()); 
 
-// Rutas
-app.use('/api/usuarios', usuarioRoutes);
+// Usar las rutas de parqueaderos
+app.use('/api/parqueaderos', parqueaderoRoutes);
 
-// Inicio del servidor
-const PORT = process.env.PORT || 3000;
+// Configuración del puerto
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });

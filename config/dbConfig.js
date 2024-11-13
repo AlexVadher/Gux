@@ -1,20 +1,12 @@
-// db.js
+// src/config/dbConfig.js
 const mysql = require('mysql2');
-require('dotenv').config();
 
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',  // Cambia esto
-    password: process.env.DB_PASSWORD || '',  // Cambia esto
-    database: process.env.DB_NAME || 'parqueadero_bd',  // Cambia esto
+// Configura la conexión a tu base de datos MySQL
+const pool = mysql.createPool({
+  host: 'localhost',
+  user: 'root', // Tu usuario de MySQL
+  password: '', // Tu contraseña de MySQL
+  database: 'parqueadero_db' // El nombre de tu base de datos
 });
 
-connection.connect((err) => {
-    if (err) {
-        console.error('Error al conectar a la base de datos:', err);
-        return;
-    }
-    console.log('Conectado a la base de datos MySQL');
-});
-
-module.exports = connection;
+module.exports = pool.promise(); // Promesas para manejar las consultas asíncronas
