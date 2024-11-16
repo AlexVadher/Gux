@@ -1,11 +1,11 @@
 // src/config/dbConfig.js
-import mysql from 'mysql2';
+import {createPool} from 'mysql2/promise'; // manejo de promesas con mysql2
 import dotenv from 'dotenv';
 
 dotenv.config(); // carga las variables de entorno
 
 // Configura la conexión a tu base de datos MySQL
-const pool = mysql.createPool({
+const pool = createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
@@ -13,4 +13,4 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,
 });
 
-export default pool.promise(); // Promesas para manejar las consultas asíncronas
+export default pool;
