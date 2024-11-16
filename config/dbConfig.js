@@ -1,8 +1,11 @@
 // src/config/dbConfig.js
 import mysql from 'mysql2';
+import dotenv from 'dotenv';
+
+dotenv.config(); // carga las variables de entorno
 
 // Configura la conexión a tu base de datos MySQL
-const pool = createPool({
+const pool = mysql.createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
