@@ -1,16 +1,20 @@
 // src/app.js
-const express = require('express');
+import express from 'express';
+// import parqueaderoRoutes from './routes/parkingRoutes.js';
+import userRouter from './routes/usersRoutes.js';
+
 const app = express();
-const parqueaderoRoutes = require('./routes/parkingRoutes');
 
 // Middleware para parsear el cuerpo de las solicitudes JSON
-app.use(express.json()); 
+app.use(express.json());
 
 // Usar las rutas de parqueaderos
-app.use('/api/parqueaderos', parqueaderoRoutes);
+// app.use('/api/parqueaderos', parqueaderoRoutes);
+
+app.use(userRouter);
 
 // Configuración del puerto
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 });

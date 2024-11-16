@@ -1,10 +1,13 @@
 // routes/usuarioRoutes.js
-const express = require('express');
-const router = express.Router();
-// const { crearUsuario, autenticarUsuario, obtenerUsuarios } = require('../controllers/usuarioController');
+import {userController} from '../controllers/userController.js';
+import {Router} from 'express';
 
-// router.post('/registro', crearUsuario);
-// router.post('/login', autenticarUsuario);
-// router.get('/consult', obtenerUsuarios)
+const router = Router();
 
-module.exports = router;
+router.post('/register', userController.registerUser);
+router.put('/updateProfile/:id_usuario', userController.updateUser);
+router.put('/updatePassword/:id_usuario', userController.updatePassword);
+//router.post('/login', userController.loginUser);
+// router.get('/consult', userController.consultUser);
+
+export default router;

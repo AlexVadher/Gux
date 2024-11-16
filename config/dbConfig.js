@@ -1,12 +1,13 @@
 // src/config/dbConfig.js
-const mysql = require('mysql2');
+import mysql from 'mysql2';
 
 // Configura la conexión a tu base de datos MySQL
-const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root', // Tu usuario de MySQL
-  password: '', // Tu contraseña de MySQL
-  database: 'parqueadero_db' // El nombre de tu base de datos
+const pool = createPool({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
 
-module.exports = pool.promise(); // Promesas para manejar las consultas asíncronas
+export default pool.promise(); // Promesas para manejar las consultas asíncronas
