@@ -95,14 +95,20 @@ export class userModel {
             console.error(error);
         }
     }
+
     // Método para consultar un usuario por nombre de usuario
     static async getUserByUsername(username) {
         try {
-            const result = await pool.query(''); // ST por definir
-            return result;
+            console.log('Usuario recibidos del controlador: ', username);
+            const result = await pool.query(
+                'SELECT * FROM usuario WHERE usuario = ?',
+                [username],
+            ); // ST por definir
+            return result[0];
         } catch (error) {
             console.error(error);
         }
+        console.log('Usuario encontrado: ', result);
     }
 }
 export default userModel;
