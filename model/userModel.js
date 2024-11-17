@@ -68,22 +68,36 @@ export class userModel {
             console.error(error);
         }
     }
-    // Método para actualizar la contraseña de un usuario
-    static async updatePassword(id, password) {
+    // Actualizar la contraseña del usuario
+    static async updatePassword(id_usuario, newpassword) {
         try {
-            const result = await pool.query(''); // ST por definir
+            console.log(
+                'Datos recibidos del controller: ',
+                id_usuario,
+                newpassword,
+            ); // depurar estilo junior XD
+
+            const hashedPassword = await bcrypt.hash(newpassword, 10);
+            console.log('Contraseña nueva encriptada: ', hashedPassword);
+            const query = 'UPDATE usuario SET clave = ? WHERE id_usuario = ?';
+            const values = [hashedPassword, id_usuario];
+            const result = await pool.query(query, values);
             return result;
         } catch (error) {
-            console.error(error);
+            console.error('Error al actualizar la contraseña: ', error);
+            throw new Error('Error al actualizar la contraseña');
         }
     }
-    // Método para eliminar un usuario
-    static async deleteUser(id) {
+    //obtener id (contraseña)
+    static async getUserById(id_usuario) {
         try {
-            const result = await pool.query(''); // ST por definir
-            return result;
+            const query = 'SELECT * FROM usuario WHERE id_usuario = ?';
+            const values = [id_usuario];
+            const [result] = await pool.query(query, values);
+            return result[0];
         } catch (error) {
-            console.error(error);
+            console.error('Error al actualizar la contraseña: ', error);
+            throw new Error('Error al actualizar la contraseña');
         }
     }
     // Método para obtener todos los usuarios
@@ -95,7 +109,6 @@ export class userModel {
             console.error(error);
         }
     }
-
     // Método para consultar un usuario por nombre de usuario
     static async getUserByUsername(username) {
         try {

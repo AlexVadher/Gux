@@ -1,4 +1,5 @@
 import userModel from '../model/userModel.js';
+import bcrypt from 'bcrypt';
 
 export class userController {
     // Método para registro de usuario nuevo
@@ -95,7 +96,7 @@ export class userController {
                 id_usuario,
             };
             const result = await userModel.updateUser(user);
-            res.json(result);
+            res.json({message: 'Usuario actualizado con éxito', result});
         } catch (error) {
             console.error(error);
         }
@@ -104,10 +105,57 @@ export class userController {
     static async updatePassword(req, res) {
         try {
             const {password, newpassword} = req.body;
-            const result = await userModel.updatePassword(id, password);
-            res.json(result);
+            const {id_usuario} = req.params;
+
+            console.log('Datos recibidos de la solicitud: ', req.body); // depurar estilo junior XD
+
+            if (!password || !newpassword) {
+                return res.status(400).json({
+                    message:
+                        'Debes proporcionar la contraseña actual y la nueva contraseña',
+                });
+            }
+
+            // Verificar que la nueva contraseña no sea igual a la actual
+            if (password === newpassword) {
+                return res.status(400).json({
+                    message:
+                        'La nueva contraseña no puede ser la misma que la actual',
+                });
+            }
+
+            // Consultar la contraseña actual del usuario
+            const user = await userModel.getUserById(id_usuario);
+            if (!user) {
+                return res.status(404).json({message: 'Usuario no encontrado'});
+            }
+
+            // Verificar si la contraseña actual coincide
+            const isPasswordCorrect = await bcrypt.compare(
+                password,
+                user.clave,
+            );
+            if (!isPasswordCorrect) {
+                return res
+                    .status(401)
+                    .json({message: 'La contraseña actual es incorrecta'});
+            }
+            //Encriptar la nueva contraseña antes de actualizarla
+            const result = await userModel.updatePassword(
+                id_usuario,
+                newpassword,
+            );
+            console.log('Contraseña actualizada con éxito'); // depurar estilo junior XD
+
+            res.json({
+                message: 'Contraseña actualizada con éxito',
+                result,
+            });
         } catch (error) {
             console.error(error);
+            res.status(500).json({
+                message: 'Error al actualizar la contraseña',
+            });
         }
     }
     // Método para solicitar la eliminación de un usuario
