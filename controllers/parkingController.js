@@ -1,80 +1,124 @@
-// // src/controllers/parkingController.js
-// const pool = require('../config/dbConfig');
+import parkingModel from '../model/parkingModel.js';
+export class parkingController {
+    // Método para crear un nuevo parqueadero
+    static async createParking(req, res) {
+        try {
+            const {
+                nombre_parqueadero,
+                ubicacion_geografica,
+                direccion,
+                capacidad,
+                horario,
+                tarifa,
+                id_administrador,
+            } = req.body;
 
-// // Obtener todos los parqueaderos
-// exports.obtenerParqueaderos = async (req, res) => {
-//   try {
-//     const [rows] = await pool.query('SELECT * FROM parqueadero');
-//     res.status(200).json(rows);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Hubo un error al obtener los parqueaderos' });
-//   }
-// };
+            if (
+                !nombre_parqueadero ||
+                !ubicacion_geografica ||
+                !direccion ||
+                !capacidad ||
+                !horario ||
+                !tarifa ||
+                !id_administrador
+            ) {
+                return res.status(400).json({
+                    message: 'Faltan datos obligatorios',
+                    data: req.body,
+                });
+            }
 
-// // Obtener parqueadero por ID
-// exports.obtenerParqueaderoPorId = async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const [rows] = await pool.query('SELECT * FROM parqueadero WHERE id_parqueadero = ?', [id]);
-//     if (rows.length > 0) {
-//       res.status(200).json(rows[0]);
-//     } else {
-//       res.status(404).json({ message: 'Parqueadero no encontrado' });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Hubo un error al obtener el parqueadero' });
-//   }
-// };
+            const parking = {
+                nombre_parqueadero,
+                ubicacion_geografica,
+                direccion,
+                capacidad,
+                horario,
+                tarifa,
+                id_administrador,
+            };
 
-// // Crear un nuevo parqueadero
-// exports.crearParqueadero = async (req, res) => {
-//   const { nombre_parqueadero, ubicacion_geografica, direccion, capacidad, horario, tarifa, id_administrador } = req.body;
-//   try {
-//     const [result] = await pool.query(
-//       'INSERT INTO parqueadero (nombre_parqueadero, ubicacion_geografica, direccion, capacidad, horario, tarifa, id_administrador) VALUES (?, ?, ?, ?, ?, ?, ?)',
-//       [nombre_parqueadero, ubicacion_geografica, direccion, capacidad, horario, tarifa, id_administrador]
-//     );
-//     res.status(201).json({ id_parqueadero: result.insertId });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Hubo un error al crear el parqueadero' });
-//   }
-// };
+            const result = await parkingModel.createParking(parking);
+            res.json(result);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    // Método para listar todos los parqueaderos
+    static async getParkings(req, res) {
+        try {
+            const parkings = await parkingModel.getParkings();
+            res.json(parkings);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    // Método para obtener un parqueadero por ID
+    static async getParkingById(req, res) {
+        try {
+            const {id} = req.params;
+            const parking = await parkingModel.getParkingById(id);
+            res.json(parking);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    // Método para actualizar un parqueadero
+    static async updateParking(req, res) {
+        try {
+            const {
+                nombre_parqueadero,
+                ubicacion_geografica,
+                direccion,
+                capacidad,
+                horario,
+                tarifa,
+                id_administrador,
+            } = req.body;
 
-// // Actualizar un parqueadero
-// exports.actualizarParqueadero = async (req, res) => {
-//   const { id } = req.params;
-//   const { nombre_parqueadero, ubicacion_geografica, direccion, capacidad, horario, tarifa, id_administrador } = req.body;
-//   try {
-//     const [result] = await pool.query(
-//       'UPDATE parqueadero SET nombre_parqueadero = ?, ubicacion_geografica = ?, direccion = ?, capacidad = ?, horario = ?, tarifa = ?, id_administrador = ? WHERE id_parqueadero = ?',
-//       [nombre_parqueadero, ubicacion_geografica, direccion, capacidad, horario, tarifa, id_administrador, id]
-//     );
-//     if (result.affectedRows > 0) {
-//       res.status(200).json({ message: 'Parqueadero actualizado correctamente' });
-//     } else {
-//       res.status(404).json({ message: 'Parqueadero no encontrado' });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Hubo un error al actualizar el parqueadero' });
-//   }
-// };
+            if (
+                !nombre_parqueadero ||
+                !ubicacion_geografica ||
+                !direccion ||
+                !capacidad ||
+                !horario ||
+                !tarifa ||
+                !id_administrador
+            ) {
+                return res.status(400).json({
+                    message: 'Faltan datos obligatorios',
+                    data: req.body,
+                });
+            }
 
-// // Eliminar un parqueadero
-// exports.eliminarParqueadero = async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const [result] = await pool.query('DELETE FROM parqueadero WHERE id_parqueadero = ?', [id]);
-//     if (result.affectedRows > 0) {
-//       res.status(200).json({ message: 'Parqueadero eliminado correctamente' });
-//     } else {
-//       res.status(404).json({ message: 'Parqueadero no encontrado' });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Hubo un error al eliminar el parqueadero' });
-//   }
-// };
+            const {id_parqueadero} = req.params;
+
+            const parking = {
+                nombre_parqueadero,
+                ubicacion_geografica,
+                direccion,
+                capacidad,
+                horario,
+                tarifa,
+                id_administrador,
+                id_parqueadero,
+            };
+            const result = await parkingModel.updateParking(parking);
+            res.json(result);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    // Método para eliminar un parqueadero
+    static async deleteParking(req, res) {
+        try {
+            const {id} = req.params;
+            const result = await parkingModel.deleteParking(id);
+            res.json(result);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+
+export default parkingController;

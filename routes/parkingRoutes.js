@@ -1,25 +1,19 @@
-// // src/routes/parqueaderoRoutes.js
-// const express = require('express');
-// const router = express.Router();
-// const {obtenerParqueaderos,
-// obtenerParqueaderoPorId,
-// crearParqueadero,
-// actualizarParqueadero,
-// eliminarParqueadero} = require('../controllers/parkingController');
+import {Router} from 'express';
+import parkingController from '../controllers/parkingController.js';
 
-// // Ruta para obtener todos los parqueaderos
-// router.get('/', obtenerParqueaderos);
+const routerParking = Router();
 
-// // Ruta para obtener un parqueadero por ID
-// router.get('/:id', obtenerParqueaderoPorId);
+// Endpoints para parqueaderos
 
-// // Ruta para crear un nuevo parqueadero
-// router.post('/', crearParqueadero);
+// Obtener todos los parqueaderos (GET)
+routerParking.get('/parking', parkingController.getParkings);
+// Obtener un parqueadero por ID (GET)
+routerParking.get('/parking/:id', parkingController.getParkingById);
+// Crear un nuevo parqueadero (POST)
+routerParking.post('/registerParking', parkingController.createParking);
+// Actualizar un parqueadero (PUT)
+routerParking.put('/updateParking', parkingController.updateParking);
+// Eliminar un parqueadero (DELETE)
+routerParking.delete('/parkingDelete/:id', parkingController.deleteParking);
 
-// // Ruta para actualizar un parqueadero por ID
-// router.put('/:id', actualizarParqueadero);
-
-// // Ruta para eliminar un parqueadero por ID
-// router.delete('/:id', eliminarParqueadero);
-
-// module.exports = router;
+export default routerParking;

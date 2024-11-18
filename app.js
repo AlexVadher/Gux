@@ -2,6 +2,7 @@
 import express from 'express';
 // import parqueaderoRoutes from './routes/parkingRoutes.js';
 import userRouter from './routes/usersRoutes.js';
+import routerParking from './routes/parkingRoutes.js';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 // app.use('/api/parqueaderos', parqueaderoRoutes);
 
 app.use(userRouter);
+app.use(routerParking);
 
 // Configuración del puerto
 const PORT = process.env.PORT || 5000;
