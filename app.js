@@ -13,7 +13,7 @@ app.use(express.json());
 // app.use('/api/parqueaderos', parqueaderoRoutes);
 
 app.use(userRouter);
-app.use(routerParking);
+app.use('/api', routerParking);
 
 // Configuración del puerto
 const PORT = process.env.PORT || 5000;

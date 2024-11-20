@@ -113,7 +113,7 @@ export class userModel {
     static async getUserByUsername(username) {
         try {
             console.log('Usuario recibidos del controlador: ', username);
-            const result = await pool.query(
+            const [result] = await pool.query(
                 'SELECT * FROM usuario WHERE usuario = ?',
                 [username],
             ); // ST por definir
