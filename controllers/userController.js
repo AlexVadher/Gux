@@ -9,6 +9,7 @@ export class userController {
             const {
                 nombre,
                 apellido,
+                correo,
                 documento,
                 telefono,
                 usuario,
@@ -19,6 +20,7 @@ export class userController {
             if (
                 !nombre ||
                 !apellido ||
+                !correo ||
                 !usuario ||
                 !documento ||
                 !telefono ||
@@ -41,6 +43,7 @@ export class userController {
             const user = {
                 nombre,
                 apellido,
+                correo,
                 documento,
                 telefono,
                 usuario,

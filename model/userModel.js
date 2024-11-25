@@ -8,6 +8,7 @@ export class userModel {
             const {
                 nombre,
                 apellido,
+                correo,
                 documento,
                 telefono,
                 usuario,
@@ -20,10 +21,11 @@ export class userModel {
             console.log('Datos recibidos del controller: ', user); // depurar estilo junior XD
 
             const result = await pool.query(
-                'INSERT INTO usuario (nombre, apellido, documento, telefono, usuario, clave, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                'INSERT INTO usuario (nombre, apellido, correo, documento, telefono, usuario, clave, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 [
                     nombre,
                     apellido,
+                    correo,
                     documento,
                     telefono,
                     usuario,
