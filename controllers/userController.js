@@ -1,5 +1,6 @@
 import userModel from '../model/userModel.js';
 import bcrypt from 'bcrypt';
+import verifyToken from '../utils/tokenUtil.js';
 
 export class userController {
     // Método para registro de usuario nuevo
@@ -164,6 +165,25 @@ export class userController {
             const {id} = req.body;
             const result = await userModel.deleteUser(id);
             res.json(result);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    // Método para obtener el perfil de un usuario autenticado por token
+    static async getUserProfile(req, res) {
+        try {
+            const {authorization} = req.headers;
+            const {id_usuario} = req.params;
+
+            if (!authorization) {
+                return res.status(401).json({message: 'No hay token'});
+            }
+
+            const user = await userModel.getUserById(id_usuario);
+            if (!user) {
+                return res.status(404).json({message: 'Usuario no encontrado'});
+            }
+            res.json(user);
         } catch (error) {
             console.error(error);
         }
