@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import userModel from '../model/userModel.js';
-import generateToken from '../utils/tokenUtil.js';
+import {generateToken} from '../utils/tokenUtil.js';
 
 export class authController {
     static async login(req, res) {
@@ -29,10 +29,8 @@ export class authController {
                 });
             }
 
-            // Comparar la clave ingresada con la clave encriptada de la base de datos
             const match = await bcrypt.compare(clave, user.clave);
 
-            // Si las claves no coinciden, retornar un error
             if (!match) {
                 return res.status(400).json({message: 'Clave incorrecta'});
             }
@@ -45,7 +43,6 @@ export class authController {
                 id: user.id_usuario,
             };
 
-            // Generar el token con el metodo de utilidad generateToken y el payload(usuario, id)
             const token = await generateToken(payload);
 
             console.log('Token generado', token);

@@ -13,6 +13,7 @@ CREATE TABLE usuario (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
+    correo VARCHAR(50),
     documento VARCHAR(20) UNIQUE,
     telefono VARCHAR(20),
     usuario VARCHAR(50) UNIQUE NOT NULL,

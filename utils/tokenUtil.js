@@ -1,4 +1,4 @@
-import {SignJWT} from 'jose';
+import {SignJWT, jwtVerify} from 'jose';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,17 +15,17 @@ export const generateToken = async (payload) => {
 
     return jwt;
 };
-// funcion para verificar token
-// export const verifyToken = async (token) => {
-//     const jwt = new SignJWT();
-//     const decoder = new TextDecoder();
-//     const encoder = new TextEncoder();
-//     const payload = await jwt.verify(
-//         decoder.decode(token),
-//         encoder.encode(process.env.JWT_PRIVATE_KEY),
-//     );
 
-//     return payload;
-// };
+export const validateToken = async (token) => {
+    try {
+        const {payload} = await jwtVerify(
+            token,
+            new TextEncoder().encode(process.env.JWT_PRIVATE_KEY),
+        );
+        return payload;
+    } catch (error) {
+        throw new Error('Token inválido o expirado');
+    }
+};
 
-export default generateToken;
+export default {generateToken, validateToken};
